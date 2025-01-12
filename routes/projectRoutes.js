@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
 
-// Crear un nuevo proyecto con múltiples descripciones
 router.post('/', async (req, res) => {
   try {
     const { name, descriptions, companyId } = req.body;
@@ -14,7 +13,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Obtener todos los proyectos
 router.get('/', async (req, res) => {
   try {
     const projects = await Project.find().populate('companyId', 'name');
@@ -25,7 +23,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Editar proyecto (añadir descripción)
 router.put('/:projectId', async (req, res) => {
   try {
     const { projectId } = req.params;
