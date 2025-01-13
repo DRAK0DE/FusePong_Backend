@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const UserStory = require('../models/UserStory');  // Importar el modelo de historia de usuario
 
-
+// Ruta para crear una historia de usuario
 router.post('/', async (req, res) => {
   try {
     const { projectId, title, description } = req.body;
 
+    // Validar campos
     if (!projectId || !title || !description) {
       return res.status(400).json({ message: 'Todos los campos son obligatorios' });
     }
@@ -18,7 +19,7 @@ router.post('/', async (req, res) => {
       description
     });
 
-    await newUserStory.save();  // Subir a la BD
+    await newUserStory.save();  // Guardar en MongoDB
     res.status(201).json({ message: 'Historia de usuario creada con éxito', userStory: newUserStory });
   } catch (error) {
     console.error('Error al crear la historia de usuario:', error);

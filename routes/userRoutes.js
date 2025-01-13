@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
     const newUser = await User.create({
       email,
       password: hashedPassword,
-      company: companyId
+      company: companyId // Relación con la compañía
     });
 
     res.status(201).json({ message: 'Usuario registrado', user: newUser });
@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Ingreso usuario
+// Login usuario
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -70,6 +70,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Listar usuarios (por ejemplo)
 router.get('/', async (req, res) => {
   try {
     const users = await User.find().populate('company');

@@ -6,7 +6,7 @@ const projectSchema = new mongoose.Schema({
     required: true,
   },
   descriptions: {
-    type: [String],
+    type: [String], // Array de strings para múltiples descripciones
     required: true,
   },
   companyId: {
