@@ -24,7 +24,21 @@ router.get('/', async (req, res) => {
 // Crear ticket
 router.post('/', async (req, res) => {
   try {
-    const newTicket = await Ticket.create(req.body);
+    const { title, projectId, description, status = 'Activo' } = req.body;
+
+    // Validación de campos obligatorios
+    if (!title || !projectId || !description) {
+      return res.status(400).json({ message: 'Faltan campos obligatorios' });
+    }
+
+    const newTicket = new Ticket({
+      title,
+      projectId,
+      description, // Se guarda la descripción seleccionada
+      status,
+    });
+
+    await newTicket.save(); // Guardar en la base de datos
     res.status(201).json(newTicket);
   } catch (error) {
     console.error('Error al crear ticket:', error);
