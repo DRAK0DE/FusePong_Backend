@@ -1,17 +1,16 @@
 const express = require('express'); 
 const router = express.Router();
 const Ticket = require('../models/Ticket');
-const Project = require('../models/Project'); // Asegúrate de importar el modelo Project
+const Project = require('../models/Project');
 
-// Obtener tickets con información del proyecto y compañía
 router.get('/', async (req, res) => {
   try {
     const tickets = await Ticket.find()
       .populate({
         path: 'projectId',
         populate: {
-          path: 'companyId', // Hacer populate del campo companyId
-          select: 'name', // Seleccionar solo el nombre de la compañía
+          path: 'companyId',
+          select: 'name',
         },
       });
     res.status(200).json(tickets);
@@ -26,7 +25,7 @@ router.post('/', async (req, res) => {
   try {
     const { title, projectId, description, status = 'Activo' } = req.body;
 
-    // Validación de campos obligatorios
+
     if (!title || !projectId || !description) {
       return res.status(400).json({ message: 'Faltan campos obligatorios' });
     }
@@ -34,11 +33,11 @@ router.post('/', async (req, res) => {
     const newTicket = new Ticket({
       title,
       projectId,
-      description, // Se guarda la descripción seleccionada
+      description,
       status,
     });
 
-    await newTicket.save(); // Guardar en la base de datos
+    await newTicket.save();
     res.status(201).json(newTicket);
   } catch (error) {
     console.error('Error al crear ticket:', error);
@@ -97,8 +96,6 @@ router.put('/edit-description', async (req, res) => {
     if (!project) {
       return res.status(404).json({ message: 'Proyecto no encontrado' });
     }
-
-    // Reemplazar la descripción antigua por la nueva
     const descriptionIndex = project.descriptions.indexOf(oldDescription);
     if (descriptionIndex === -1) {
       return res.status(404).json({ message: 'Descripción no encontrada' });
